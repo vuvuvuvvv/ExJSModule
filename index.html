@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fruit and Vegetable Gallery</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        *{
+            box-sizing: border-box;
+            padding: 0;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row p-0 m-0" style="height: 100vh;">
+            <div class="col-md-4 bg-primary" style="height: 100% !important;">
+                <ul class="list-group" id="categoryList">
+                    <!-- Danh sách loại củ/quả -->
+                </ul>
+            </div>
+            <div class="col-md-8 py-3">
+                <h3 id="title" class="w-100"></h3>
+                <div id="imageGallery" class="row">
+                    <!-- Hiển thị các ảnh tương ứng -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Dữ liệu giả lập
+        var vegetableListCate = [
+            {"id": 1, "image":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQODM9zSYS-9Jr6-b6TsftQbulDKxi0Xugqg&s", "title":"Kiwi"},
+            {"id": 2, "image":"https://static.libertyprim.com/files/varietes/pomme-akane-large.jpg?1569320193", "title":"Apple"},
+            {"id": 3, "image":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQd4gO4myN3EVmr-A4Ps9_Cxq9YGInt8TCU3g&s", "title":"Banana"},
+        ];
+
+        var vegetableListItem = [
+            {"parentId": 1, "image":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQODM9zSYS-9Jr6-b6TsftQbulDKxi0Xugqg&s"},
+            {"parentId": 1, "image":"https://cdn.chonongsanonline.com/uploads/all/6jiUUQJ873M41ZE1IBvigy9sGdr0O8451UQiL9Z3.jpg"},
+            {"parentId": 1, "image":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1_hWv-vUYNwk8bnB0J8BFMMkw7GPv8psP2A&s"},
+            {"parentId": 1, "image":"https://cdn.prod.website-files.com/63ed08484c069d0492f5b0bc/6580837da3bc6245f6657895_6580418f225356a8ed8de015_a-bunch-of-sliced-kiwis.webp"},
+            {"parentId": 1, "image":"https://cdn.tgdd.vn/Files/2018/03/15/1074573/6-loi-ich-bat-ngo-cua-trai-kiwi-202110211628557582.jpg"},
+            {"parentId": 1, "image":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROs4VUIrIepfukfpjHnjcgaIdiaDqUF7wA9A&s"},
+            {"parentId": 2, "image":"https://static.libertyprim.com/files/varietes/pomme-akane-large.jpg?1569320193"},
+            {"parentId": 2, "image":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSAu2mZ830SD2185RCt26uImF95C7pXFhwXMQ&s"},
+            {"parentId": 2, "image":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS26c_PV-KV2F3eGKxixPUYWJwyahCM_oF89Q&s"},
+            {"parentId": 2, "image":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTg9dWtB64x2W-vjDvbOa14wop1AXDqvwvArg&s"},
+            {"parentId": 2, "image":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTzCJQ2xC4va0D9WebTdAo00Rgru7AiTyX_KQ&s"},
+            {"parentId": 2, "image":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRb8VwZpsu6k53w-jYsdu8l7GLzhNfnCskYOA&s"},
+            {"parentId": 2, "image":"https://cdn.britannica.com/77/76377-050-29C2322A/Apples-tree.jpg"},
+            {"parentId": 3, "image":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQd4gO4myN3EVmr-A4Ps9_Cxq9YGInt8TCU3g&s"},
+            {"parentId": 3, "image":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUuHf-LGcZqm_Ng49fzikvHv9rsVkZf_RwVA&s"},
+            {"parentId": 3, "image":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSP7gbmcXF7ZV88S4eU-1LepaJ4rTQmsZ1kw&s"},
+            {"parentId": 3, "image":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStyCqbXGutXlNeFzFUgA6vuO2966d4Tfqusg&s"},
+            {"parentId": 2, "image":"https://blog-images-1.pharmeasy.in/blog/production/wp-content/uploads/2021/01/30152155/shutterstock_518328943-1.jpg"},
+            {"parentId": 3, "image":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTkAZomREl3UMvdSLM8NdaCuRQ72A7aZarw4YCRdLtALRweE8wLtREiNRblVx_q4VmIiSQ&usqp=CAU"},
+        ];
+
+        // Tạo danh sách loại củ/quả bên trái
+        function renderCategoryList() {
+            var categoryList = document.getElementById('categoryList');
+            vegetableListCate.forEach(function(category) {
+                var listItem = document.createElement('li');
+                listItem.className = 'list-group-item border-0 bg-transparent text-white d-flex align-items-center';
+                listItem.innerHTML = `
+                    <img loading="lazy" src="${category.image}" class="img-thumbnail" style="width: 50px; height: 50px; margin-right: 10px;">
+                    <span>${category.title}</span>
+                `;
+                listItem.addEventListener('click', function() {
+                    document.getElementById('title').innerHTML=category.title;
+                    showImages(category.id);
+                });
+                categoryList.appendChild(listItem);
+            });
+        }
+
+        // Hiển thị các ảnh tương ứng bên phải
+        function showImages(categoryId) {
+            var imageGallery = document.getElementById('imageGallery');
+            imageGallery.innerHTML = '';
+            vegetableListItem.filter(function(item) {
+                return item.parentId === categoryId;
+            }).forEach(function(item) {
+                var imageItem = document.createElement('div');
+                imageItem.className = 'col-md-4 mb-3';
+                imageItem.innerHTML = `
+                    <img src="${item.image}" class="img-fluid img-thumbnail">
+                `;
+                imageGallery.appendChild(imageItem);
+            });
+        }
+
+        // Khởi tạo danh sách khi load trang
+        renderCategoryList();
+    </script>
+</body>
+</html>
